@@ -1,0 +1,278 @@
+/*Styles for bounding box for image*/
+html{
+    font-family: sans-serif;
+}
+
+/* Set box-sizing for all elements */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.alert {
+    background-color: #ffffff; /* Red background */
+    color: rgb(196, 62, 62); /* White text */
+    padding: 0;
+    border-radius: 10px;
+    /*border: 1px solid #eb867f;*/
+    margin-bottom: 20px;
+    font-size: 12px;
+    /*font-weight: bold;*/
+}
+
+
+/* Set a consistent background color for the page */
+body {
+    margin: 0; /* Remove default margin */
+    background-color: #F8FAFD; /* Light grayish background */
+    font-family: cursive, sans-serif; /* Optional: Set a default font */
+    color: #333; /* Text color */
+    padding: 20px; /* Optional: Adds padding to the body */
+}
+
+
+#image-area {
+    width: 530px;
+    height: 300px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    color: #aaa;
+    margin-bottom: 15px;
+    /*background-color:#fffbfa;*/
+}
+
+#image-area img {
+    max-width: 100%;
+    max-height: 100%;
+    display: none; /* Hidden until an image is uploaded */
+}
+
+.header{
+    width: 954px;
+    height: 154px;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: black;
+    margin: 15px auto;
+    padding: 0 65px;
+    text-decoration: none;
+    background-image: url('../images/arabiii_c.png'); /* Path to your image */
+    background-size: cover; /* Scales the image to cover the entire div */
+    background-position: center; /* Centers the image within the div */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+.header:hover{
+    box-shadow: 0 0 15px #c7dee5;   
+}
+
+.header_logo img{
+    width:180px;
+    height: 80px;
+    padding: 0;
+}
+
+.header_content a{
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 118px;
+    height: 39px;
+    display: flex; /* Center the content within this div */
+    justify-content: center; /* Center the text horizontally */
+    align-items: center; /* Center the text vertically */
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+    /*background: linear-gradient(45deg, #ff7e5f, #feb47b);  Gradient background */
+    font-family: cursive;
+}
+
+.header_content a:hover{
+    box-shadow: 0 1px 8px grey;
+    background-color: #f9e9e4;
+}
+
+.header_content a:active{
+    box-shadow: 2px 2px 10px black;
+    background-color: #fedcd2;
+}
+
+
+
+
+
+.main{
+    width: 954px;
+    background-color: white;
+    /*height: 676px;*/
+    /*overflow-y: auto; Enables vertical scrolling if content overflows */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    margin: 15px auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 30px;
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+.main:hover{
+    box-shadow: 0 0 15px #c7dee5;   
+}
+
+.main_results a{
+    width: 530px;
+    height: 154px;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: black;
+    margin: 15px;
+    padding: 0px 32px 0px 32px;
+    text-decoration: none;
+    transition: box-shadow 0.2s ease, background-color 0.3s ease; /* Smooth transition */
+}
+
+.main_results a:hover{
+    background-color: #fdf7f5;
+}
+
+.main_results a:active{
+    background-color: #f9e9e4; 
+}
+
+.main_input_section{
+    margin-bottom: 50px;
+}
+
+
+.main_form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input[type="file"] {
+    padding: 10px 20px; /* Add some padding */
+    display: inline-block; /* Make it inline-block */
+    border: 2px solid black; /* Border styling */
+    border-radius: 10px; /* Rounded corners */
+    background-color: white; /* Background color */
+    color: #333; /* Text color */
+    cursor: pointer; /* Change cursor to pointer */
+    font-size: 14px; /* Font size */
+    transition: background-color 0.3s ease; /* Smooth transition */
+    align-content: center;
+    font-family: cursive;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+    display: none; /* Hide the default button */
+}
+
+input[type="file"]:hover {
+    box-shadow: 0 1px 8px grey;
+    background-color: #f9e9e4;
+}
+
+input[type="file"]:active {
+    box-shadow: 2px 2px 10px black;
+    background-color: #fedcd2;
+}
+
+.main_form button{
+    text-decoration: none;
+    background-color: white;
+    color: black;
+    font-size: 15px;
+    border: 2px solid black;
+    border-radius: 10px;
+    width: 118px;
+    height: 39px;
+    display: flex; /* Center the content within this div */
+    justify-content: center; /* Center the text horizontally */
+    align-items: center; /* Center the text vertically */
+    transition: box-shadow 0.3s ease, background-color 0.3s ease; /* Smooth transition */
+    font-family: cursive;
+}
+
+.main_form button:hover{
+    box-shadow: 0 1px 8px grey;
+    background-color: #f9e9e4;
+}
+
+.main_form button:active{
+    box-shadow: 2px 2px 10px black;
+    background-color: #fedcd2;
+}
+
+.main_article_header_contents{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main_results_paragraph{
+    line-height: 150%;
+    font-size: 13px;
+}
+
+.main_entry_date{
+    color: #5c6b70;
+    font-size: 14px;
+}
+
+.main_labels{
+    font-size: 14px;
+}
+
+.footer {
+    /*width: 100vw; /* Ensures the footer spans the full width of the viewport */
+    max-width: 100%;  /*Ensures it doesn't exceed the screen width */
+    box-sizing: border-box; /* Includes padding/border within the width */
+    border: 1px solid #ccc;
+    text-align: left;
+    border-radius: 5px;
+    font-size: 12px;
+    text-decoration: none;
+    background-color: #585a5a;
+    /*padding: 0 150px;*/
+}
+
+
+.footer_content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: white;
+    margin: 15px auto;
+    /*padding: 0 50px;*/
+    width: 954px;
+    font-family: cursive
+}
+
+.footer__item{
+    margin: 20px 0;
+}

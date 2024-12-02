@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_1.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_2.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+</head>
+<body>
+
+    
+    <header class="header">
+        <div class="header_logo">
+            <img src="{{ url_for('static', filename='images/new_Logo.svg') }}" alt="my_logo"/>
+        </div>
+        <div class="header_content">
+            <a href="{{ url_for('home') }}">Home</a>
+        </div>
+    </header>
+
+
+    <main class="main">
+        <div class="main2_content"> <!--use this to set the content with flex-grow 1:2-->
+            <section class="main2_image_n_classes">
+                <div class="main2_image_display">
+                    <!--<img src="data:image/png;base64,{{entry[3]}}" alt="my_logo"/> relevant when loading image directly from Mongo. Commented after Image drawn from Imgbb-->
+                    <img src="{{ entry[3] }}" alt="my_pic"/>
+                </div>
+                <div class="main2_classes">
+                    <p><b>Classes: </b>{{entry[1]}}</p>
+                </div>
+            </section>
+            <section class="main2_summary">
+                <h3>Manuscript Summary</h3>
+                    <p> {{entry[2]}}
+                    </p>
+            </section>
+        </div>
+    </main>
+    
+
+    <footer class="footer2">
+        <div class="footer_content2">
+            <section class="left">
+                <div class="footer__item">
+                    Ph.D Project by Djeneba Diawara
+                </div>
+                <div class="footer__item">
+                    Obafemi Awolowo University
+                </div>
+            </section>
+
+            <section class="middle">
+                <div class="footer2_logo">
+                    <img src="{{ url_for('static', filename='images/black_logo.svg') }}" alt="company_logo"/>
+                </div>
+            </section>
+
+            <section class="right">
+                <div class="footer__item">
+                    Top Analytics
+                </div>
+                <div class="footer__item">
+                    topanalytics.dti@gmail.com
+                </div>
+            </section>
+        </div>
+    </footer>
+    
+</body>
+</html>

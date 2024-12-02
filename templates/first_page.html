@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles_1.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+</head>
+
+<body>
+    
+    <header class="header">
+        <div class="header_logo">
+            <img src="{{ url_for('static', filename='images/new_Logo.svg') }}" alt="my_logo"/>
+        </div>
+        <div class="header_content">
+            <a href="{{url_for('home', clear = 1)}}">Clear</a>
+        </div>
+    </header>
+
+
+
+
+    <main class="main">
+
+        <section class="main_input_section">
+            <!--<h3>Insert images</h3>-->
+            <div>
+                <!-- Image display area -->
+                <div id="image-area">
+                    <span>No Image Uploaded</span>
+                    <img id="uploaded-image" alt="Uploaded Image">
+                </div>
+                <!-- Image upload form-->
+                <form action="/" method="POST" enctype="multipart/form-data" class="main_form">
+                    <input name="my_image" type="file" id="image-input" accept="image/*" required>
+                    <br><br>
+                    <button type="submit" id="main_button" onclick="return showLoading(event)">Check</button>
+                </form>                
+            </div>
+        </section>
+
+        
+        {%if alert_me %}
+        <div class="alert">
+            Ooops!! Can't recognise this manuscript. Upload another Image! Or get a clearer photo.
+        </div>
+        {%endif%}
+        
+        
+        <section class="main_results">
+            {%for entry in my_details%} <!--use {{loop.index0}} to get the 0-based index of each iteration -->
+            <a href="{{ url_for('details', index=loop.index0) }}">
+            <!--<h3>Model Results</h3>-->
+                <article class="main_results_article">
+                    <div class="main_article_header_contents">
+                        <h1 class="main_labels">{{entry[1] | truncate(30, true)}}</h1>
+                        <time class="main_entry_date" datetime="24-10-2024">{{entry[0]}}</time>
+                    </div>
+                    <p class="main_results_paragraph">{{entry[2]| truncate(150, true)}}</p>
+                </article>  
+            </a>
+            {%endfor%}
+        </section>
+      
+    </main>
+
+
+
+
+    <footer class="footer">
+        <div class="footer_content">
+
+            <section class="left">
+                <div class="footer__item">
+                    Ph.D Project by Djeneba Diawara
+                </div>
+                <div class="footer__item">
+                    Obafemi Awolowo University
+                </div>
+            </section>
+
+            <section class="middle">
+                <div class="footer_logo">
+                    <img src="{{ url_for('static', filename='images/company_logo.svg') }}" alt="company_logo"/>
+                </div>
+            </section>
+
+            <section class="right">
+                <div class="footer__item">
+                    Top Analytics
+                </div>
+                <div class="footer__item">
+                    topanalytics.dti@gmail.com
+                </div>
+            </section>
+
+        </div>
+    </footer>
+
+    <!-- Link to the external JavaScript file -->
+    <script src="static/js/script.js"></script>
+    
+</body>
+</html>
