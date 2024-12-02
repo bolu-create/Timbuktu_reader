@@ -24,6 +24,7 @@ from pymongo import MongoClient
 import requests
 
 
+
 def create_app():
     
     app = Flask(__name__)
@@ -34,41 +35,11 @@ def create_app():
     #model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
     #my_details = []
     #print("Model loaded:", model)  # Debug print to confirm model loaded
-    
-    
 
 
     @app.route("/", methods=["GET","POST"])
     def home(): 
-        #model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
-        # Helper function to download the file from Google Drive
-        def download_from_google_drive(file_id, destination):
-            url = f'https://drive.google.com/uc?id={file_id}'
-            response = requests.get(url, stream=True)
-            with open(destination, 'wb') as file:
-                for chunk in response.iter_content(chunk_size=1024):
-                    if chunk:
-                        file.write(chunk)
-        
-        # Specify model download links and local paths
-        timbuktu_model_id = "1Mb_rITFd9uawtAsTnZWjBNRYYusZEuAr"
-        text_class_model_id = "1y57fDsHFeCtGo4E_rD9La85_zgP1DS7T"
-
-        # File paths where the models will be saved locally
-        timbuktu_model_path = 'models/timbuktu_identifier.h5'
-        text_class_model_path = 'models/text_classification_model.h5'
-
-        # Check if models are already downloaded or not, download them if not
-        if not os.path.exists(timbuktu_model_path):
-            download_from_google_drive(timbuktu_model_id, timbuktu_model_path)
-
-        if not os.path.exists(text_class_model_path):
-            download_from_google_drive(text_class_model_id, text_class_model_path)
-
-        # Now load the models after ensuring they are downloaded
-        timbuktu_model = tf.keras.models.load_model(timbuktu_model_path)
-        text_class_model = tf.keras.models.load_model(text_class_model_path)
-        
+        model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
         alert_me = 0
         clear = request.args.get('clear', type=int)
         
@@ -107,13 +78,13 @@ def create_app():
                 
 
                 # Make a prediction
-                prediction = timbuktu_model.predict(img_array)
+                prediction = model.predict(img_array)
                 label = "timbuktu" if prediction[0] > 0.5 else "non_timbuktu"
                 print(label)  # Debug the model is working
 
                 if label == "timbuktu":
                     # Google Vision API - Text Detection
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
                     
                     def detect_text(image_bytes):
                         client = vision.ImageAnnotatorClient()
@@ -149,7 +120,7 @@ def create_app():
                     # TODO(developer): Update and un-comment below line
                     PROJECT_ID = "fluted-citizen-423010-p4"
                     vertexai.init(project=PROJECT_ID, location="us-central1")
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
 
                     model = GenerativeModel("gemini-1.5-pro-002")
 
@@ -170,7 +141,7 @@ def create_app():
 
                     # ............... TRANSLATION..............
 
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
                     translate_client = translate_v2.Client()
                     # text = "لونج جونسون، لونج جون جونسون، مواء"
                     text = result
