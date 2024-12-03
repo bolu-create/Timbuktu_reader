@@ -4,4 +4,4 @@ services:
     env: python
     buildCommand: "pip install -r requirements.txt"   # Command to install dependencies
     startCommand: "python app.py"  # Command to run the app (replace with your actual start command)
-    runtime: python-3.12.7  # Specify the Python version to use
+    runtime: python-3.10  # Specify the Python version to use
