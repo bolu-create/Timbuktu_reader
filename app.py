@@ -39,7 +39,7 @@ def create_app():
 
     @app.route("/", methods=["GET","POST"])
     def home(): 
-        model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
+        model = tf.keras.models.load_model(r'models/timbuktu_identifier.h5')
         alert_me = 0
         clear = request.args.get('clear', type=int)
         
@@ -175,11 +175,11 @@ def create_app():
                     # ..........GET CLASSIFICATION OF TEXT...........
 
                     # Load the tokenizer from Google Drive
-                    with open(r'models\tokenizer.pkl', 'rb') as file:
+                    with open(r'models/tokenizer.pkl', 'rb') as file:
                         tokenizer = pickle.load(file)
                         
                     # Load the saved model
-                    model = tf.keras.models.load_model(r'models\djeni_text_classification_model.h5')
+                    model = tf.keras.models.load_model(r'models/djeni_text_classification_model.h5')
                     
                     # Example sentence
                     single_sentence = [translated_text]
