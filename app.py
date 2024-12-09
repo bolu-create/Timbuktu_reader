@@ -22,6 +22,7 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 import pickle
 from pymongo import MongoClient
 import requests
+import gdown
 
 
 
@@ -39,7 +40,7 @@ def create_app():
 
     @app.route("/", methods=["GET","POST"])
     def home(): 
-        model = tf.keras.models.load_model(r'models/timbuktu_identifier.h5')
+        model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
         alert_me = 0
         clear = request.args.get('clear', type=int)
         
@@ -64,27 +65,65 @@ def create_app():
                 formatted_date= datetime.datetime.today().strftime("%b %d, %Y")
                 image_bytes = my_image.read()
                 
-                #print(formatted_date)
-                ### my_details.append((formatted_date,my_image.filename,my_image.content_type))
-                        
+
+                #................Setting Up my Models...........................
+                
+                tokenizer_ID = "11-tCYbwqb8trLE0RUhdJe9DfsBehBb6r"
+                text_model_ID = "1WONo2r5ch_CtmcpHW8W2iAWssanYapCS"
+                image_model_ID = "18RrPfNB72f6WfY1Ei0RerZSUUzV_2Nr5"
+                
+                # Define local paths for temporary storage
+                tokenizer_path = "models/tokenizer.pkl"
+                text_model_path = "models/djeni_text_classification_model.h5"
+                image_model_path= "models/timbuktu_identifier.h5"
+                
+                # Ensure the temp directory exists
+                os.makedirs("models", exist_ok=True)
+                
+                # Function to download a file from Google Drive
+                def download_from_drive(file_id, destination):
+                    url = f"https://drive.google.com/uc?id={file_id}"
+                    gdown.download(url, destination, quiet=False)
+
+                # Load tokenizer
+                if not os.path.exists(tokenizer_path):
+                    print("Downloading tokenizer...")
+                    download_from_drive(tokenizer_ID, tokenizer_path)
+                with open(tokenizer_path, 'rb') as file:
+                    tokenizer = pickle.load(file)
+
+                # Load text model
+                if not os.path.exists(text_model_path):
+                    print("Downloading text model...")
+                    download_from_drive(text_model_ID, text_model_path)
+                text_model = tf.keras.models.load_model(text_model_path)
+                
+                # Load image model
+                if not os.path.exists(image_model_path):
+                    print("Downloading image model...")
+                    download_from_drive(image_model_ID, image_model_path)
+                image_model = tf.keras.models.load_model(image_model_path)
+                
+                                          
+                                          
+                #....................USING MY MODEL.........................
+                
+                #.....................Image Model..........................                   
                 # Preprocess the image (convert to array and scale values)
-                #### img = image.load_img(my_image, target_size=(150, 150)) 
                 img = image.load_img(io.BytesIO(image_bytes), target_size=(150, 150))       
                 img_array = image.img_to_array(img)
                 img_array = np.expand_dims(img_array, axis=0)
-                img_array /= 255.0  # Normalize as done during training
-                #img_buff = image.load_img(io.BytesIO(image_bytes))#, target_size=(150, 150))   
-                img_buff = image.load_img(io.BytesIO(image_bytes), target_size=(500, 250)) #reducing the image quality      
+                img_array /= 255.0  # Normalize as done during training 
+                img_buff = image.load_img(io.BytesIO(image_bytes), target_size=(500, 250)) #reducing the image quality   
                 
-
                 # Make a prediction
-                prediction = model.predict(img_array)
+                prediction = image_model.predict(img_array)
                 label = "timbuktu" if prediction[0] > 0.5 else "non_timbuktu"
                 print(label)  # Debug the model is working
 
                 if label == "timbuktu":
                     # Google Vision API - Text Detection
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
                     
                     def detect_text(image_bytes):
                         client = vision.ImageAnnotatorClient()
@@ -120,7 +159,7 @@ def create_app():
                     # TODO(developer): Update and un-comment below line
                     PROJECT_ID = "fluted-citizen-423010-p4"
                     vertexai.init(project=PROJECT_ID, location="us-central1")
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
 
                     model = GenerativeModel("gemini-1.5-pro-002")
 
@@ -141,7 +180,7 @@ def create_app():
 
                     # ............... TRANSLATION..............
 
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
                     translate_client = translate_v2.Client()
                     # text = "لونج جونسون، لونج جون جونسون، مواء"
                     text = result
@@ -172,15 +211,8 @@ def create_app():
                     """
                     classified_summary = get_vertex_response(translated_text + "\n" + classify_req)
 
-                    # ..........GET CLASSIFICATION OF TEXT...........
-
-                    # Load the tokenizer from Google Drive
-                    with open(r'models/tokenizer.pkl', 'rb') as file:
-                        tokenizer = pickle.load(file)
-                        
-                    # Load the saved model
-                    model = tf.keras.models.load_model(r'models/djeni_text_classification_model.h5')
-                    
+                    # ..........GET CLASSIFICATION OF TEXT..............
+                    #...........Text model used.....................
                     # Example sentence
                     single_sentence = [translated_text]
                     maxlen=277
@@ -190,7 +222,7 @@ def create_app():
                     single_padded = pad_sequences(single_sequence, maxlen=maxlen)
 
                     # Get predictions
-                    single_prediction = model.predict(single_padded)
+                    single_prediction = text_model.predict(single_padded)
 
                     # Threshold to binary predictions
                     threshold = 0.5
@@ -201,6 +233,7 @@ def create_app():
                     predicted_labels = [label_names[i] for i in range(len(label_names)) if binary_prediction[0][i] == 1]
 
                     classified_result= ('\n').join(predicted_labels)
+
 
 
                     #......................SETTING UP IMGBB............................
