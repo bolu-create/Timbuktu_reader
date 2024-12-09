@@ -40,7 +40,7 @@ def create_app():
 
     @app.route("/", methods=["GET","POST"])
     def home(): 
-        model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
+
         alert_me = 0
         clear = request.args.get('clear', type=int)
         
@@ -123,7 +123,7 @@ def create_app():
 
                 if label == "timbuktu":
                     # Google Vision API - Text Detection
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
                     
                     def detect_text(image_bytes):
                         client = vision.ImageAnnotatorClient()
@@ -159,7 +159,7 @@ def create_app():
                     # TODO(developer): Update and un-comment below line
                     PROJECT_ID = "fluted-citizen-423010-p4"
                     vertexai.init(project=PROJECT_ID, location="us-central1")
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
 
                     model = GenerativeModel("gemini-1.5-pro-002")
 
@@ -180,7 +180,7 @@ def create_app():
 
                     # ............... TRANSLATION..............
 
-                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"config\timbuktu_key.json"
+                    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r"timbuktu_key.json"
                     translate_client = translate_v2.Client()
                     # text = "لونج جونسون، لونج جون جونسون، مواء"
                     text = result
