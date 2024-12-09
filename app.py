@@ -33,10 +33,6 @@ def create_app():
     app.db = client.Timbuktu #connect to the database using app.db to save microblog connection inside "app"
 
     load_dotenv()  # loading all the environmnet variables
-    #model = tf.keras.models.load_model(r'models\timbuktu_identifier.h5')
-    #my_details = []
-    #print("Model loaded:", model)  # Debug print to confirm model loaded
-
 
     @app.route("/", methods=["GET","POST"])
     def home(): 
