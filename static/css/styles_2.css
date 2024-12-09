@@ -92,8 +92,8 @@ body {
 
 /*footer2*/
 .footer2 {
-    /*width: 100vw; /* Ensures the footer spans the full width of the viewport */
-    max-width: 100%;  /*Ensures it doesn't exceed the screen width */
+    width: 100vw; /* Ensures the footer spans the full width of the viewport */
+    /*max-width: 100%;  /*Ensures it doesn't exceed the screen width */
     /*box-sizing: border-box;  Includes padding/border within the width */
     border: 1px solid #ccc;
     text-align: left;
